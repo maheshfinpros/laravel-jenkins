@@ -12,7 +12,7 @@ pipeline {
         stage('Composer Install') {
             steps {
                 // Navigate to the Laravel project directory
-                dir('path/to/laravel/project') {
+                dir('laravel-jenkins') {
                     // Run composer install
                     sh 'composer install'
                 }
