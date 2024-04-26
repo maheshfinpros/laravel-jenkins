@@ -1,19 +1,31 @@
 pipeline {
     agent any
-
+    
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/maheshfinpros/laravel-jenkins.git'
+                // Checkout the code from SCM
+                checkout scm
             }
         }
-
-        stage('Composer Install') {
+        
+        stage('Install Dependencies') {
             steps {
-                dir('laravel-jenkins') {
+                // Change directory to the Laravel project
+                dir('path/to/laravel/project') {
+                    // Run composer install
                     sh 'composer install'
                 }
             }
+        }
+        
+        // Add more stages as needed for testing, building, deploying, etc.
+    }
+    
+    post {
+        always {
+            // Clean up after the build
+            deleteDir()
         }
     }
 }
