@@ -24,7 +24,7 @@ pipeline {
                     ]
                     
                     // Execute SSH commands
-                    sshCommand remote: [host: remoteHost, credentialsId: sshCredentialsId, user: 'ubuntu'], command: sshCommands.join(' && ')
+                    sshCommand remote: [name: 'ssh-remote', host: remoteHost, credentialsId: sshCredentialsId, user: 'ubuntu'], command: sshCommands.join(' && ')
                 }
             }
         }
