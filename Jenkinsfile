@@ -4,26 +4,27 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Checkout your source code from Git
-                git 'https://github.com/maheshfinpros/laravel-jenkins.git'
+                checkout scm
             }
         }
-        stage('Install Apache') {
+        stage('Execute Commands Over SSH') {
             steps {
                 script {
-                    // Define the SSH credentials to use for connecting to the remote server
-                    def sshCredentials = credentials('ssh-remoteserver')
+                    // Define SSH credentials ID
+                    def sshCredentialsId = '3ee699db-7305-49a5-98ea-bad2b9b8ac15'
                     
-                    // Define the SSH command to execute on the remote server
-                    def sshCommand = "sudo apt update && sudo apt install -y apache2"
+                    // Define SSH remote host
+                    def remoteHost = '3.110.147.246'
                     
-                    // Execute the SSH command on the remote server
-                    sshCommand remote: [
-                        host: '3.110.147.246',
-                        user: 'ubuntu',
-                        credentialsId: sshCredentials,
-                        command: sshCommand
+                    // Define SSH commands to execute
+                    def sshCommands = [
+                        "sudo apt update",
+                        "sudo apt install -y apache2"
+                        // Add more commands here as needed
                     ]
+                    
+                    // Execute SSH commands
+                    sshCommand remote: [host: remoteHost, credentialsId: sshCredentialsId, user: 'ubuntu'], command: sshCommands.join(' && ')
                 }
             }
         }
