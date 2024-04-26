@@ -2,31 +2,17 @@ pipeline {
     agent any
     
     stages {
-        stage('Checkout') {
+        stage('Install Apache') {
             steps {
-                // Checkout the code from SCM
-                checkout scm
-            }
-        }
-        
-        stage('Install Dependencies') {
-            steps {
-                // Change directory to the Laravel project
-                dir('path/to/laravel/project') {
-                    // Run composer install
-                    sh 'composer install'
+                script {
+                    sshCommand remote: [
+                        host: '3.110.147.246', // Your server's IP address
+                        user: 'ubuntu', // SSH username
+                        port: 22, // SSH port (default is 22)
+                        credentialsId: '3ee699db-7305-49a5-98ea-bad2b9b8ac15' // ID of the SSH credentials configured in Jenkins
+                    ], command: 'sudo apt update && sudo apt install -y apache2'
                 }
             }
         }
-        
-        // Add more stages as needed for testing, building, deploying, etc.
-    }
-    
-    post {
-        always {
-            // Clean up after the build
-            deleteDir()
-        }
     }
 }
-
