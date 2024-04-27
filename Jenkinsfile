@@ -9,6 +9,13 @@ pipeline {
             }
         }
 
+        stage('Install Apache and PHP') {
+            steps {
+                // Install Apache 2 and PHP on the remote server
+                sh 'ssh -i /var/lib/jenkins/.ssh/jenkins_rsa ubuntu@13.232.25.21 "sudo apt-get update && sudo apt-get install -y apache2 php"'
+            }
+        }
+
         stage('Zipping project') {
             steps {
                 // Zip your entire repository files
