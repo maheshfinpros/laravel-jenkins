@@ -9,13 +9,6 @@ pipeline {
             }
         }
 
-        stage('Build APP') {
-            steps {
-                // Add commands to build your application if necessary
-                // For example: npm install, composer install, etc.
-            }
-        }
-
         stage('Zipping project') {
             steps {
                 // Zip your entire repository files
