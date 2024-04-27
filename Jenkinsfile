@@ -1,18 +1,22 @@
 pipeline {
     agent any
-    
+
     stages {
-        stage('Install Apache') {
+        stage('Checkout Repo') {
             steps {
-                script {
-                    // SSH into the web server and install Apache
-                    sshagent(['3ee699db-7305-49a5-98ea-bad2b9b8ac15']) {
-                        sh '''
-                            ssh ubuntu@3.110.147.246 'sudo apt-get update'
-                            ssh ubuntu@3.110.147.246 'sudo apt-get install -y apache2'
-                        '''
-                    }
-                }
+                // Checkout the code from your GitHub repository
+                git 'https://github.com/maheshfinpros/laravel-jenkins.git'
+            }
+        }
+
+        stage('Zipping and Redirecting Project') {
+            steps {
+                // Zip your entire repository files
+                sh 'zip -r project.zip .'
+                // Upload zip file to remote server's /var/www directory
+                sh 'scp -i /var/lib/jenkins/.ssh/id_rsa project.zip ubuntu@13.232.25.21:/var/www/'
+                // Extract zip file on the target server
+                sh 'ssh -i /var/lib/jenkins/.ssh/id_rsa ubuntu@13.232.25.21 "cd /var/www/ && unzip -o project.zip"'
             }
         }
     }
