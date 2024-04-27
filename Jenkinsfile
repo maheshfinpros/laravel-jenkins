@@ -9,6 +9,13 @@ pipeline {
             }
         }
 
+        stage('Build APP') {
+            steps {
+                // Add commands to build your application if necessary
+                // For example: npm install, composer install, etc.
+            }
+        }
+
         stage('Zipping project') {
             steps {
                 // Zip your entire repository files
@@ -19,14 +26,14 @@ pipeline {
         stage('Upload Artifact to Target Server') {
             steps {
                 // Upload zip file to remote server's /var/www directory
-                sh 'scp -i /home/jenkins/.ssh/jenkins_rsa project.zip ubuntu@13.232.25.21:/var/www/'
+                sh 'scp -i /var/lib/jenkins/.ssh/jenkins_rsa project.zip ubuntu@13.232.25.21:/var/www/'
             }
         }
 
         stage('Extracting Project') {
             steps {
                 // Extract zip file on the target server
-                sh 'ssh -i /home/jenkins/.ssh/jenkins_rsa ubuntu@13.232.25.21 "cd /var/www/ && unzip -o project.zip"'
+                sh 'ssh -i /var/lib/jenkins/.ssh/jenkins_rsa ubuntu@13.232.25.21 "cd /var/www/ && unzip -o project.zip"'
             }
         }
     }
