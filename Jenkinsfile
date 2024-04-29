@@ -9,6 +9,14 @@ pipeline {
             }
         }
 
+        stage('Build App') {
+            steps {
+                // Build your Laravel application
+                sh 'composer install'
+                sh 'php artisan build'
+            }
+        }
+
         stage('Zipping project') {
             steps {
                 // Zip your entire repository files
