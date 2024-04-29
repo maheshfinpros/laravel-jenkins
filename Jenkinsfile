@@ -10,7 +10,7 @@ pipeline {
 
         stage('Install MySQL and Create Database') {
             steps {
-                sh 'sudo apt-get update -y && sudo apt-get install -y mysql-server' // Fix: Add -y flag
+                sh 'sudo apt-get update -y && sudo apt-get install -y mysql-server' // Install MySQL
                 sh 'sudo mysql -e "CREATE DATABASE maheshfinpros"' // Create database
                 sh 'sudo mysql -e "CREATE USER \'mahesh.m\'@\'localhost\' IDENTIFIED BY \'mahesh123\'"' // Create user
                 sh 'sudo mysql -e "GRANT ALL PRIVILEGES ON maheshfinpros.* TO \'mahesh.m\'@\'localhost\'"' // Grant privileges
@@ -21,6 +21,12 @@ pipeline {
         stage('Prepare Environment') {
             steps {
                 sh 'cp /var/lib/jenkins/workspace/Jenkins-Laravel/.env.example /var/lib/jenkins/workspace/Jenkins-Laravel/.env' // Rename .env.example to .env
+                // Update .env file
+                sh 'sed -i "s/DB_HOST=.*/DB_HOST=127.0.0.1/" /var/lib/jenkins/workspace/Jenkins-Laravel/.env'
+                sh 'sed -i "s/DB_PORT=.*/DB_PORT=3306/" /var/lib/jenkins/workspace/Jenkins-Laravel/.env'
+                sh 'sed -i "s/DB_DATABASE=.*/DB_DATABASE=maheshfinpros/" /var/lib/jenkins/workspace/Jenkins-Laravel/.env'
+                sh 'sed -i "s/DB_USERNAME=.*/DB_USERNAME=mahesh.m/" /var/lib/jenkins/workspace/Jenkins-Laravel/.env'
+                sh 'sed -i "s/DB_PASSWORD=.*/DB_PASSWORD=mahesh123/" /var/lib/jenkins/workspace/Jenkins-Laravel/.env'
             }
         }
 
