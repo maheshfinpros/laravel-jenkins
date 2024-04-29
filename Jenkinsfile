@@ -19,14 +19,14 @@ pipeline {
         stage('Upload Artifact to Target Server') {
             steps {
                 // Upload zip file to remote server's /var/www directory
-                sh 'scp -i /var/lib/jenkins/.ssh/jenkins_rsa project.zip ubuntu@13.232.25.21:/var/www/project.zip'
+                sh 'scp -i /var/lib/jenkins/.ssh/jenkins_rsa project.zip ubuntu@13.201.8.1:/var/www/project.zip'
             }
         }
 
         stage('Extracting Project') {
             steps {
                 // Extract zip file on the target server
-                sh 'ssh -i /var/lib/jenkins/.ssh/jenkins_rsa ubuntu@13.232.25.21 "cd /var/www/ && unzip -o project.zip"'
+                sh 'ssh -i /var/lib/jenkins/.ssh/jenkins_rsa ubuntu@13.201.8.1 "cd /var/www/ && unzip -o project.zip"'
             }
         }
     }
