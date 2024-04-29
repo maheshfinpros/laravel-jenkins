@@ -1,3 +1,4 @@
+jenkinsfile_content = """
 pipeline {
     agent any
 
@@ -13,7 +14,7 @@ pipeline {
             steps {
                 // Build your Laravel application
                 sh 'composer install'
-                sh 'php artisan key:generate' // Adding key generation as an example, replace it with your actual build command if necessary
+                sh 'php artisan build'
             }
         }
 
@@ -38,10 +39,5 @@ pipeline {
             }
         }
     }
-    
-    post {
-        always {
-            echo 'Success'
-        }
-    }
 }
+"""
