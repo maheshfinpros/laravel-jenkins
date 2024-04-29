@@ -10,7 +10,7 @@ pipeline {
 
         stage('Install MySQL and Create Database') {
             steps {
-                sh 'sudo apt-get update && sudo apt-get install -y mysql-server' // Install MySQL
+                sh 'sudo apt-get update -y && sudo apt-get install -y mysql-server' // Fix: Add -y flag
                 sh 'sudo mysql -e "CREATE DATABASE maheshfinpros"' // Create database
                 sh 'sudo mysql -e "CREATE USER \'mahesh.m\'@\'localhost\' IDENTIFIED BY \'mahesh123\'"' // Create user
                 sh 'sudo mysql -e "GRANT ALL PRIVILEGES ON maheshfinpros.* TO \'mahesh.m\'@\'localhost\'"' // Grant privileges
