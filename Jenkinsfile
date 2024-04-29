@@ -5,7 +5,7 @@ pipeline {
         stage('Checkout Repo') {
             steps {
                 // Checkout the code from your GitHub repository
-                git 'https://github.com/maheshfinpros/laravel-jenkins.git'
+                git 'https://github.com/maheshfinpros/laravel-jenkins.git' 
                 echo 'Code checked out from GitHub repository'
             }
         }
@@ -14,8 +14,7 @@ pipeline {
             steps {
                 // Build your Laravel application
                 sh 'composer install'
-                sh 'php artisan build'
-                echo 'Laravel application built successfully'
+                sh 'php artisan key:generate' // Adding key generation as an example, replace it with your actual build command if necessary
             }
         }
 
