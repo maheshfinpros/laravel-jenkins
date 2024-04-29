@@ -13,7 +13,9 @@ pipeline {
             steps {
                 // Build your Laravel application
                 sh 'composer install'
-                sh 'php artisan build'
+                sh 'php artisan key:generate'
+                sh 'php artisan migrate --seed'
+                sh 'npm install && npm run production'
             }
         }
 
