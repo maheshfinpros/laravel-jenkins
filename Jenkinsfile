@@ -6,7 +6,7 @@ pipeline {
         stage('Checkout Repo') {
             steps {
                 // Checkout the code from your GitHub repository
-                git 'https://github.com/maheshfinpros/laravel-jenkins.git'
+                git 'https://github.com/maheshfinpros/laravel-jenkins.git'  //123
             }
         }
 
