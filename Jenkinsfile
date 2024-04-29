@@ -8,10 +8,24 @@ pipeline {
             }
         }
 
+        stage('Install MySQL and Create Database') {
+            steps {
+                sh 'sudo apt-get update && sudo apt-get install -y mysql-server' // Install MySQL
+                sh 'sudo mysql -e "CREATE DATABASE maheshfinpros"' // Create database
+                sh 'sudo mysql -e "CREATE USER \'mahesh.m\'@\'localhost\' IDENTIFIED BY \'mahesh123\'"' // Create user
+                sh 'sudo mysql -e "GRANT ALL PRIVILEGES ON maheshfinpros.* TO \'mahesh.m\'@\'localhost\'"' // Grant privileges
+                sh 'sudo mysql -e "FLUSH PRIVILEGES"' // Flush privileges
+            }
+        }
+
+        stage('Prepare Environment') {
+            steps {
+                sh 'cp /var/lib/jenkins/workspace/Jenkins-Laravel/.env.example /var/lib/jenkins/workspace/Jenkins-Laravel/.env' // Rename .env.example to .env
+            }
+        }
+
         stage('Build App') {
             steps {
-                sh 'ls -la /var/lib/jenkins/workspace/Jenkins-Laravel/' // Check directory contents for debugging
-                sh 'cat /var/lib/jenkins/workspace/Jenkins-Laravel/.env' // Check .env file contents for debugging
                 sh 'composer install'
                 sh 'php artisan key:generate'
                 sh 'php artisan build'
@@ -34,12 +48,6 @@ pipeline {
             steps {
                 sh 'ssh -i /var/lib/jenkins/.ssh/jenkins_rsa ubuntu@13.201.8.1 "cd /var/www/ && unzip -o project.zip"'
             }
-        }
-    }
-
-    post {
-        always {
-            echo 'Pipeline execution completed.'
         }
     }
 }
