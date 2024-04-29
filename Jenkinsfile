@@ -1,3 +1,4 @@
+jenkinsfile_content = """
 pipeline {
     agent any
 
@@ -9,20 +10,11 @@ pipeline {
             }
         }
 
-        stage('Prepare Environment') {
-            steps {
-                // Copy .env file from repository to workspace
-                sh 'cp .env.example .env'
-            }
-        }
-
         stage('Build App') {
             steps {
                 // Build your Laravel application
                 sh 'composer install'
-                sh 'php artisan key:generate'
-                sh 'php artisan migrate --seed'
-                sh 'npm install && npm run production'
+                sh 'php artisan build'
             }
         }
 
@@ -46,8 +38,6 @@ pipeline {
                 sh 'ssh -i /var/lib/jenkins/.ssh/jenkins_rsa ubuntu@13.201.8.1 "cd /var/www/ && unzip -o project.zip"'
             }
         }
-        
-        // Add more stages as needed...
-
     }
 }
+"""
