@@ -1,3 +1,4 @@
+jenkinsfile_content = """
 pipeline {
     agent any
 
@@ -39,3 +40,4 @@ pipeline {
         }
     }
 }
+"""
