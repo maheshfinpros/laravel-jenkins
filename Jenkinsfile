@@ -33,28 +33,6 @@ pipeline {
             }
         }
 
-        stage('Prepare Environment') {
-            steps {
-                script {
-                    try {
-                        // Check if the .env file exists before modifying it
-                        if (fileExists('/var/www/.env')) {
-                            // Update .env file
-                            sh 'sed -i "s/DB_HOST=.*/DB_HOST=127.0.0.1/" /var/www/.env'
-                            sh 'sed -i "s/DB_PORT=.*/DB_PORT=3306/" /var/www/.env'
-                            sh 'sed -i "s/DB_DATABASE=.*/DB_DATABASE=maheshfinpros/" /var/www/.env'
-                            sh 'sed -i "s/DB_USERNAME=.*/DB_USERNAME=mahesh.m/" /var/www/.env'
-                            sh 'sed -i "s/DB_PASSWORD=.*/DB_PASSWORD=mahesh123/" /var/www/.env'
-                        } else {
-                            error "The .env file does not exist."
-                        }
-                    } catch (Exception e) {
-                        error "Failed to prepare environment: ${e.message}"
-                    }
-                }
-            }
-        }
-
         stage('Build App') {
             steps {
                 // Build your Laravel application
@@ -84,9 +62,4 @@ pipeline {
             }
         }
     }
-}
-
-def fileExists(filePath) {
-    def file = new File(filePath)
-    return file.exists()
 }
