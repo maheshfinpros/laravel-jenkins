@@ -37,7 +37,7 @@ pipeline {
             steps {
                 // Build your Laravel application
                 sh 'composer install'
-                sh 'php artisan build'
+                sh 'php artisan optimize' // Use `optimize` instead of `build`
             }
         }
 
