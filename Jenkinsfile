@@ -20,39 +20,39 @@ pipeline {
 
         stage('Prepare Environment') {
             steps {
-                sh 'cp /var/lib/jenkins/workspace/Jenkins-Laravel/.env.example /var/lib/jenkins/workspace/Jenkins-Laravel/.env' // Rename .env.example to .env
+                sh 'cp /var/www/Jenkins-Laravel/.env.example /var/www/Jenkins-Laravel/.env' // Rename .env.example to .env
                 // Update .env file
-                sh 'sed -i "s/DB_HOST=.*/DB_HOST=127.0.0.1/" /var/lib/jenkins/workspace/Jenkins-Laravel/.env'
-                sh 'sed -i "s/DB_PORT=.*/DB_PORT=3306/" /var/lib/jenkins/workspace/Jenkins-Laravel/.env'
-                sh 'sed -i "s/DB_DATABASE=.*/DB_DATABASE=maheshfinpros/" /var/lib/jenkins/workspace/Jenkins-Laravel/.env'
-                sh 'sed -i "s/DB_USERNAME=.*/DB_USERNAME=mahesh.m/" /var/lib/jenkins/workspace/Jenkins-Laravel/.env'
-                sh 'sed -i "s/DB_PASSWORD=.*/DB_PASSWORD=mahesh123/" /var/lib/jenkins/workspace/Jenkins-Laravel/.env'
+                sh 'sed -i "s/DB_HOST=.*/DB_HOST=127.0.0.1/" /var/www/Jenkins-Laravel/.env'
+                sh 'sed -i "s/DB_PORT=.*/DB_PORT=3306/" /var/www/Jenkins-Laravel/.env'
+                sh 'sed -i "s/DB_DATABASE=.*/DB_DATABASE=maheshfinpros/" /var/www/Jenkins-Laravel/.env'
+                sh 'sed -i "s/DB_USERNAME=.*/DB_USERNAME=mahesh.m/" /var/www/Jenkins-Laravel/.env'
+                sh 'sed -i "s/DB_PASSWORD=.*/DB_PASSWORD=mahesh123/" /var/www/Jenkins-Laravel/.env'
             }
         }
 
         stage('Build App') {
             steps {
-                sh 'composer install'
-                sh 'php artisan key:generate'
-                sh 'php artisan build'
+                sh 'cd /var/www/Jenkins-Laravel && composer install' // Install dependencies
+                sh 'cd /var/www/Jenkins-Laravel && php artisan key:generate' // Generate application key
+                sh 'cd /var/www/Jenkins-Laravel && php artisan build' // Build application
             }
         }
 
         stage('Zipping project') {
             steps {
-                sh 'zip -r project.zip .'
+                sh 'cd /var/www && zip -r project.zip Jenkins-Laravel' // Zip the project
             }
         }
 
         stage('Upload Artifact to Target Server') {
             steps {
-                sh 'scp -i /var/lib/jenkins/.ssh/jenkins_rsa project.zip ubuntu@13.201.8.1:/var/www/project.zip'
+                sh 'scp -i /var/lib/jenkins/.ssh/jenkins_rsa /var/www/project.zip ubuntu@13.201.8.1:/var/www/project.zip'
             }
         }
 
         stage('Extracting Project') {
             steps {
-                sh 'ssh -i /var/lib/jenkins/.ssh/jenkins_rsa ubuntu@13.201.8.1 "cd /var/www/ && unzip -o project.zip"'
+                sh 'ssh ubuntu@13.201.8.1 "cd /var/www && unzip -o project.zip"' // Extract the project
             }
         }
     }
