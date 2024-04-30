@@ -37,7 +37,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        sh 'cp /var/www/Jenkins-Laravel/.env.example /var/www/Jenkins-Laravel/.env' // Rename .env.example to .env
+                        // sh 'cp /var/www/Jenkins-Laravel/.env.example /var/www/Jenkins-Laravel/.env' // Rename .env.example to .env
                         // Update .env file
                         sh 'sed -i "s/DB_HOST=.*/DB_HOST=127.0.0.1/" /var/www/Jenkins-Laravel/.env'
                         sh 'sed -i "s/DB_PORT=.*/DB_PORT=3306/" /var/www/Jenkins-Laravel/.env'
