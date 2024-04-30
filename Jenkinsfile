@@ -35,7 +35,17 @@ pipeline {
 
         stage('Prepare Environment') {
             steps {
-                // This stage is empty now, as per your request
+                script {
+                    try {
+                        sh 'sed -i "s/DB_HOST=.*/DB_HOST=127.0.0.1/" /var/www/Jenkins-Laravel/.env'
+                        sh 'sed -i "s/DB_PORT=.*/DB_PORT=3306/" /var/www/Jenkins-Laravel/.env'
+                        sh 'sed -i "s/DB_DATABASE=.*/DB_DATABASE=maheshfinpros/" /var/www/Jenkins-Laravel/.env'
+                        sh 'sed -i "s/DB_USERNAME=.*/DB_USERNAME=mahesh.m/" /var/www/Jenkins-Laravel/.env'
+                        sh 'sed -i "s/DB_PASSWORD=.*/DB_PASSWORD=mahesh123/" /var/www/Jenkins-Laravel/.env'
+                    } catch (Exception e) {
+                        error "Failed to prepare environment: ${e.message}"
+                    }
+                }
             }
         }
 
